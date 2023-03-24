@@ -27,10 +27,13 @@
     <ClCompile Include="shaderClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
+    <ClCompile Include="cubeRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bufferSet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,10 +51,13 @@
     <ClInclude Include="shaderClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cube.h">
+    <ClInclude Include="cubeRender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bufferSet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsEngine.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
