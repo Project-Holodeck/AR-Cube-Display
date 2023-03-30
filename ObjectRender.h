@@ -31,12 +31,4 @@ class ObjectRender {
 		void deleteObject(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
 };
 
-
-class CubeRender : public ObjectRender {
-
-	public:
-		void addCube(Point positions[8], std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
-
-};
-
 #endif OBJECT_RENDER_H
