@@ -72,16 +72,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\irwin\Documents\Programming Stuff\CubeDisplay\Libraries\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\irwin\Documents\Programming Stuff\CubeDisplay\Libraries\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\irwin\Documents\Programming Projects\Cube Display\Libraries\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\irwin\Documents\Programming Projects\Cube Display\Libraries\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\irwin\Documents\Programming Stuff\CubeDisplay\Libraries\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\irwin\Documents\Programming Stuff\CubeDisplay\Libraries\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\irwin\Documents\Programming Projects\Cube Display\Libraries\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\irwin\Documents\Programming Projects\Cube Display\Libraries\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -145,12 +145,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bufferSet.cpp" />
+    <ClCompile Include="BufferSet.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ObjectRender.cpp" />
     <ClCompile Include="PhysicsEngine.cpp" />
-    <ClCompile Include="shaderClass.cpp" />
-    <ClCompile Include="cubeRender.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="CubeRender.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="default.vert" />
@@ -159,10 +160,11 @@
     <None Include="default.frag" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cubeRender.h" />
-    <ClInclude Include="bufferSet.h" />
+    <ClInclude Include="BufferSet.h" />
+    <ClInclude Include="Objects.h" />
+    <ClInclude Include="ObjectRender.h" />
     <ClInclude Include="PhysicsEngine.hpp" />
-    <ClInclude Include="shaderClass.h" />
+    <ClInclude Include="Shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -24,16 +24,19 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="shaderClass.cpp">
+    <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cubeRender.cpp">
+    <ClCompile Include="CubeRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bufferSet.cpp">
+    <ClCompile Include="BufferSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,16 +51,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="shaderClass.h">
+    <ClInclude Include="Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cubeRender.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bufferSet.h">
+    <ClInclude Include="BufferSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsEngine.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectRender.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

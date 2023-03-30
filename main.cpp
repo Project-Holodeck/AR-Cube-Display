@@ -2,12 +2,12 @@
 #include <Glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "shaderClass.h"
+#include "Shader.h"
 #include <chrono>
 #include <vector>
 
-#include "cubeRender.h"
-#include "bufferSet.h"
+#include "Objects.h"
+#include "BufferSet.h"
 
 int width = 1920, height = 1080;
 
@@ -22,11 +22,11 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 
-	std::vector<GLfloat> vertices;
+	std::vector<GLfloat> vertices = {
+	};
 
-	std::vector<GLuint> indices;
-
-
+	std::vector<GLuint> indices = {
+	};
 
 	GLFWwindow* window = glfwCreateWindow(width, height, "Cube Display", NULL, NULL);
 
@@ -52,24 +52,29 @@ int main() {
 	// Initializing EBO, VBO, and VAO in the BufferSet class
 	mainBuffer.generateBuffers();
 
-	// Creating cube with size of 1000 pixels at location (0, 0)
-	CubeRender cubeOne(1000, 0, 0);
-	cubeOne.setColor(0.1f, 0.8f, 0.1f);
+	//Cube(center, size, angle)
+	Cube cubeOne({ 0, 0, 0 }, 100, { 0, 0 }, { 1.0f, 0.4f, 0.4f });
 
-	// Adding cube to the vertices and indices array
+	//changeCubeCenter(x, y, z)
+	cubeOne.changeCubeCenter(100, 100, 0);
+	cubeOne.updateVertices();
 	cubeOne.addCube(vertices, indices);
-
-	// Creating cube with size of 100 pixels at location (1000, 500)
-	CubeRender cubeTwo(100, 1000, 500);
-	cubeTwo.setColor(0.5f, 0.1f, 0.1f);
-
-	// Adding cube to the vertices and indices array
-	cubeTwo.addCube(vertices, indices);
-
+	
 	// Updating the vertices and indices in the buffers
 	mainBuffer.updateArrayBuffer(vertices);
 	mainBuffer.updateElementBuffer(indices);
 
+	for (int i = 0; i < vertices.size(); i+=6) {
+		for (int j = i; j < i + 6; j++)
+			std::cout << vertices[j] << " ";
+		std::cout << std::endl;
+	}
+	std::cout << "================" << std::endl;
+	for (int i = 0; i < indices.size(); i += 3) {
+		for (int j = i; j < i + 3; j++)
+			std::cout << indices[j] << " ";
+		std::cout << std::endl;
+	}
 	// Sets the reading data of the vertices array (MUST BE DONE AFTER UPDATING ARRAY BUFFER)
 	mainBuffer.linkAttributes(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	mainBuffer.linkAttributes(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -97,7 +102,6 @@ int main() {
 			Code here to change vertices positions every loop...
 		
 		*/
-
 
 		// Updates the array buffer with any new changes to the vertices vector
 		mainBuffer.updateArrayBuffer(vertices);

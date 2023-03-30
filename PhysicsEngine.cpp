@@ -1,10 +1,13 @@
-#ifndef M_PI
-	#define M_PI 3.14159265358979323846
-#endif
+
 
 #include <iostream>
 #include <cmath>
 #include "PhysicsEngine.hpp"
+#include "Objects.h"
+
+#ifndef M_PI
+	#define M_PI 3.14159265358979323846
+#endif
 
 #define FINGERTIP_ERROR 5
 
@@ -30,11 +33,11 @@ double Plane::distanceToPoint(Point loc) {	// distance formula = |Ax+By+Cz+D|/âˆ
 	return fabs(coeff_x*loc.x + coeff_y*loc.y + coeff_z*loc.z - constant) / sqrt(coeff_x*coeff_x + coeff_y*coeff_y + coeff_z*coeff_z);
 }
 
-Cube::Cube() : center({0,0,0}), size(0), direction({0,0}) {
+Cube::Cube() : center({ 0,0,0 }), size(0), direction({ 0,0 }), color({ 0, 0, 0 }) {
 	updatePlanes();
 }
 
-Cube::Cube(Point _center, double _size, Orientation _direction) : center(_center), size(_size), direction(_direction) {
+Cube::Cube(Point _center, double _size, Orientation _direction, Color _color) : center(_center), size(_size), direction(_direction), color(_color) {
 	updatePlanes();
 }
 
@@ -192,6 +195,12 @@ void Cube::updateVertices() {
 	cube_sides[1].vertices[3] = vertex;
 	cube_sides[3].vertices[2] = vertex;
 	cube_sides[4].vertices[2] = vertex;
+
+	for (int i = 0; i < 8; i++) {
+		vertices[i].x += center.x;
+		vertices[i].y += center.y;
+		vertices[i].z += center.z;
+	}
 }
 
 bool Cube::checkHolding(Point fingertips[5]) {
