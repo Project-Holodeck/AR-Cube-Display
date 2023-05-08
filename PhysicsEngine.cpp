@@ -33,12 +33,14 @@ double Plane::distanceToPoint(Point loc) {	// distance formula = |Ax+By+Cz+D|/âˆ
 	return fabs(coeff_x*loc.x + coeff_y*loc.y + coeff_z*loc.z - constant) / sqrt(coeff_x*coeff_x + coeff_y*coeff_y + coeff_z*coeff_z);
 }
 
-Cube::Cube() : center({ 0,0,0 }), size(0), direction({ 0,0 }), color({ 0, 0, 0 }) {
+Cube::Cube(std::vector<ObjectRender>& objectVector) : center({ 0,0,0 }), size(0), direction({ 0,0 }), ObjectRender({ 0, 0, 0 }, objectVector.size()) {
 	updatePlanes();
+	objectVector.push_back(*this);
 }
 
-Cube::Cube(Point _center, double _size, Orientation _direction, Color _color) : center(_center), size(_size), direction(_direction), color(_color) {
+Cube::Cube(std::vector<ObjectRender>& objectVector, Point _center, double _size, Orientation _direction, Color _color, int id) : center(_center), size(_size), direction(_direction), ObjectRender(_color, id) {
 	updatePlanes();
+	objectVector.push_back(*this);
 }
 
 Point Cube::getCubeCenter() {
@@ -113,7 +115,7 @@ void Cube::updatePlanes() {
 	cube_sides[5] = side;
 }
 
-void Cube::updateVertices() {
+void Cube::updateCubeVertices() {
 	Point vertex;
 
 	vertex = {

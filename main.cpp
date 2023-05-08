@@ -28,6 +28,9 @@ int main() {
 	std::vector<GLuint> indices = {
 	};
 
+	std::vector<ObjectRender> objects = {
+	};
+
 	GLFWwindow* window = glfwCreateWindow(width, height, "Cube Display", NULL, NULL);
 
 	if (window == NULL) {
@@ -53,28 +56,18 @@ int main() {
 	mainBuffer.generateBuffers();
 
 	//Cube(center, size, angle)
-	Cube cubeOne({ 0, 0, 0 }, 100, { 0, 0 }, { 1.0f, 0.4f, 0.4f });
+	Cube cubeOne(objects, { 0, 0, 0 }, 100, { 0, 0 }, { 1.0f, 0.4f, 0.4f }, 0);
+
 
 	//changeCubeCenter(x, y, z)
-	cubeOne.changeCubeCenter(100, 100, 0);
-	cubeOne.updateVertices();
+	cubeOne.changeCubeCenter(-1920/2, -1080/2, 0);
+	cubeOne.updateCubeVertices();
 	cubeOne.addCube(vertices, indices);
-	
+
 	// Updating the vertices and indices in the buffers
 	mainBuffer.updateArrayBuffer(vertices);
 	mainBuffer.updateElementBuffer(indices);
 
-	for (int i = 0; i < vertices.size(); i+=6) {
-		for (int j = i; j < i + 6; j++)
-			std::cout << vertices[j] << " ";
-		std::cout << std::endl;
-	}
-	std::cout << "================" << std::endl;
-	for (int i = 0; i < indices.size(); i += 3) {
-		for (int j = i; j < i + 3; j++)
-			std::cout << indices[j] << " ";
-		std::cout << std::endl;
-	}
 	// Sets the reading data of the vertices array (MUST BE DONE AFTER UPDATING ARRAY BUFFER)
 	mainBuffer.linkAttributes(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	mainBuffer.linkAttributes(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -100,11 +93,18 @@ int main() {
 		/*
 		
 			Code here to change vertices positions every loop...
-		
+			
 		*/
+		Point updatePoint = cubeOne.getCubeCenter();
+
+		cubeOne.changeCubeCenter(updatePoint.x + 1, updatePoint.y + 1, 0);
+		cubeOne.updateCubeVertices();
+
+		cubeOne.updateVertices(cubeOne.vertices, vertices, 6);
 
 		// Updates the array buffer with any new changes to the vertices vector
 		mainBuffer.updateArrayBuffer(vertices);
+		mainBuffer.updateElementBuffer(indices);
 		
 		// Draws all the triangles from the indices vector
 		mainBuffer.bindVertexArray();

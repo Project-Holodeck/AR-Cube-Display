@@ -1,5 +1,6 @@
 #include "ObjectRender.h"
 #include "Objects.h"
+#include <iostream>
 
 
 ObjectRender::ObjectRender() {
@@ -10,18 +11,23 @@ ObjectRender::ObjectRender() {
 	indexEnd = 0;
 }
 
+ObjectRender::ObjectRender(Color _color, int _objectID) : color(_color), objectID(_objectID) {
+
+}
+
 
 void ObjectRender::setColor(GLfloat red, GLfloat green, GLfloat blue) { color = { red, green, blue }; }
 
 void ObjectRender::setColor(Color color) { this->color = color; }
 
-void ObjectRender::updateVertices(std::vector<Point> positions, std::vector<GLfloat>& vertices, int stride) {
+void ObjectRender::updateVertices(Point positions[], std::vector<GLfloat>& vertices, int stride) {
 	int screenWidth = 1920;
 	int screenHeight = 1080;
-	for (int i = 0; i < (vertexStart-vertexEnd)/6; i++) {
-		vertices[i*stride] = positions[i].x / screenWidth;
-		vertices[i*stride + 1] = positions[i].y / screenHeight;
-		vertices[i*stride + 2] = 1 /*positions[i].z*/;
+
+	for (int i = 0; i < (this->vertexEnd - this->vertexStart)/stride; i++ ) {
+		vertices[vertexStart + i*stride] = positions[i].x / screenWidth;
+		vertices[vertexStart + i * stride + 1] = positions[i].y / screenHeight;
+		vertices[vertexStart + i * stride + 2] = 0; //positions[i].z;
 	}
 
 }
@@ -30,26 +36,53 @@ void ObjectRender::updateVertices(std::vector<Point> positions, std::vector<GLfl
 void ObjectRender::updateColor(std::vector<GLfloat>& vertices, int stride) {
 
 	for (int i = vertexStart; i < vertexEnd; i += stride) {
-		vertices[i] = color.red;
-		vertices[i + 1] = color.green;
-		vertices[i + 2] = color.blue;
+		vertices[i + 3] = color.red;
+		vertices[i + 4] = color.green;
+		vertices[i + 5] = color.blue;
 	}
 
 }
 
 
-void ObjectRender::deleteObject(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices) {
-	int indexSize = vertexEnd - vertexStart;
+void ObjectRender::deleteObject(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices, std::vector<ObjectRender>& objectVector) {
 
 	std::vector<GLfloat> newVertices;
 	std::vector<GLuint> newIndices;
 
-	for (int i = indexEnd; i < indices.size(); i++) 
-		indices[indexEnd] -= indexSize;
+	int vertexSize = vertexEnd - vertexStart;
+	int indicesSize = indexEnd - indexStart;
 	
-	newVertices.insert(newVertices.begin(), vertices.begin(), vertices.begin() + vertexStart);
+	newVertices.insert(newVertices.end(), vertices.begin(), vertices.begin() + vertexStart);
+	newVertices.insert(newVertices.end(), vertices.begin() + vertexEnd, vertices.end());
 
+	for (int i = 0; i < newVertices.size(); i++)
+		std::cout << newVertices[i] << " ";
+	std::cout << std::endl;
+	vertices.clear();
 
+	vertices = newVertices;
+
+	newIndices.insert(newIndices.end(), indices.begin(), indices.begin() + indexStart);
+	newIndices.insert(newIndices.end(), indices.begin() + indexEnd, indices.end());
+	
+	indices.clear();
+	indices = newIndices;
+
+	for (int i = 0; i < objectVector.size(); i++) {
+		if (i == this->objectID || i < this->objectID)
+			continue;
+
+		objectVector[i].vertexStart -= vertexSize;
+		objectVector[i].vertexEnd -= vertexSize;
+
+		objectVector[i].indexStart -= indicesSize;
+		objectVector[i].indexEnd -= indicesSize;
+
+		objectVector[i].objectID--;
+
+	}
+
+	objectVector.erase(objectVector.begin() + this->objectID);
 }
 
 
@@ -57,9 +90,10 @@ void ObjectRender::deleteObject(std::vector<GLfloat>& vertices, std::vector<GLui
 void Cube::addCube(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices) {
 	int screenWidth = 1920;
 	int screenHeight = 1080;
+
 	// Sets index of vertices for cube (Total of 4 vertices)
-	this->vertexStart = vertices.size() / 6;
-	this->vertexEnd = vertexStart + 8;
+	this->vertexStart = vertices.size();
+	this->vertexEnd = vertexStart + 8 * 6;
 
 	// Sets positions of each vertex (stride of 3) and color (stride of 3)
 	std::vector<GLfloat> newVertices;

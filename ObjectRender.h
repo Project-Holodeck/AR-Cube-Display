@@ -17,18 +17,20 @@ class ObjectRender {
 		Color color;
 		GLuint vertexStart, vertexEnd;
 		GLuint indexStart, indexEnd;
+		int objectID;
 
 	public:
 		ObjectRender();
+		ObjectRender(Color _color, int _objectID);
 
 		// Setters
 		void setColor(GLfloat red, GLfloat green, GLfloat blue);
 		void setColor(Color color);
 
 		// Universal Object Functions
-		void updateVertices(std::vector<Point> positions, std::vector<GLfloat>& vertices, int stride);
+		void updateVertices(Point positions[], std::vector<GLfloat>& vertices, int stride);
 		void updateColor(std::vector<GLfloat>& vertices, int stride);
-		void deleteObject(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
+		void deleteObject(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices, std::vector<ObjectRender>& objectVector);
 };
 
 #endif OBJECT_RENDER_H
