@@ -59,6 +59,24 @@ void Cube::changeCubeCenter(double x, double y, double z) {
 	updatePlanes();
 }
 
+void Cube::setSize(double size) {
+	this->size = size;
+}
+
+void Cube::setDirection(Orientation direction) {
+	this->direction = direction;
+}
+
+double Cube::getSize() {
+	return this->size;
+}
+
+Orientation Cube::getDirection() {
+	return this->direction;
+}
+
+
+
 void Cube::updatePlanes() {
 	Plane side;
 	double scale;
@@ -119,9 +137,9 @@ void Cube::updateCubeVertices() {
 	Point vertex;
 
 	vertex = {
-		size/2 * sin(direction.theta + atan(sqrt(2))) * cos(direction.phi + M_PI/4),
-		size/2 * sin(direction.theta + atan(sqrt(2))) * sin(direction.phi + M_PI/4),
-		size/2 * cos(direction.theta + atan(sqrt(2)))
+		size / 2 * sin(direction.theta + atan(sqrt(2))) * cos(direction.phi + M_PI / 4),
+		size / 2 * sin(direction.theta + atan(sqrt(2))) * sin(direction.phi + M_PI / 4),
+		size / 2 * cos(direction.theta + atan(sqrt(2)))
 	};
 	vertices[0] = vertex;
 	cube_sides[0].vertices[0] = vertex;
@@ -129,9 +147,9 @@ void Cube::updateCubeVertices() {
 	cube_sides[4].vertices[0] = vertex;
 
 	vertex = {
-		size/2 * sin(direction.theta + atan(sqrt(2))) * cos(direction.phi - M_PI/4),
-		size/2 * sin(direction.theta + atan(sqrt(2))) * sin(direction.phi - M_PI/4),
-		size/2 * cos(direction.theta + atan(sqrt(2)))
+		size / 2 * sin(direction.theta + atan(sqrt(2))) * cos(direction.phi - M_PI / 4),
+		size / 2 * sin(direction.theta + atan(sqrt(2))) * sin(direction.phi - M_PI / 4),
+		size / 2 * cos(direction.theta + atan(sqrt(2)))
 	};
 	vertices[1] = vertex;
 	cube_sides[0].vertices[1] = vertex;
@@ -139,9 +157,9 @@ void Cube::updateCubeVertices() {
 	cube_sides[5].vertices[0] = vertex;
 
 	vertex = {
-		size/2 * sin(direction.theta + atan(sqrt(2))) * cos(direction.phi - M_PI*3/4),
-		size/2 * sin(direction.theta + atan(sqrt(2))) * sin(direction.phi - M_PI*3/4),
-		size/2 * cos(direction.theta + atan(sqrt(2)))
+		size / 2 * sin(direction.theta + atan(sqrt(2))) * cos(direction.phi - M_PI * 3 / 4),
+		size / 2 * sin(direction.theta + atan(sqrt(2))) * sin(direction.phi - M_PI * 3 / 4),
+		size / 2 * cos(direction.theta + atan(sqrt(2)))
 	};
 	vertices[2] = vertex;
 	cube_sides[0].vertices[2] = vertex;
@@ -149,9 +167,9 @@ void Cube::updateCubeVertices() {
 	cube_sides[5].vertices[1] = vertex;
 
 	vertex = {
-		size/2 * sin(direction.theta + atan(sqrt(2))) * cos(direction.phi + M_PI*3/4),
-		size/2 * sin(direction.theta + atan(sqrt(2))) * sin(direction.phi + M_PI*3/4),
-		size/2 * cos(direction.theta + atan(sqrt(2)))
+		size / 2 * sin(direction.theta + atan(sqrt(2))) * cos(direction.phi + M_PI * 3 / 4),
+		size / 2 * sin(direction.theta + atan(sqrt(2))) * sin(direction.phi + M_PI * 3 / 4),
+		size / 2 * cos(direction.theta + atan(sqrt(2)))
 	};
 	vertices[3] = vertex;
 	cube_sides[0].vertices[3] = vertex;
@@ -159,9 +177,9 @@ void Cube::updateCubeVertices() {
 	cube_sides[4].vertices[1] = vertex;
 
 	vertex = {
-		size/2 * sin(direction.theta + atan(M_PI - sqrt(2))) * cos(direction.phi + M_PI/4),
-		size/2 * sin(direction.theta + atan(M_PI - sqrt(2))) * sin(direction.phi + M_PI/4),
-		size/2 * cos(direction.theta + atan(M_PI - sqrt(2)))
+		size / 2 * sin(direction.theta + atan(M_PI - sqrt(2))) * cos(direction.phi + M_PI / 4),
+		size / 2 * sin(direction.theta + atan(M_PI - sqrt(2))) * sin(direction.phi + M_PI / 4),
+		size / 2 * cos(direction.theta + atan(M_PI - sqrt(2)))
 	};
 	vertices[4] = vertex;
 	cube_sides[1].vertices[0] = vertex;
@@ -169,9 +187,9 @@ void Cube::updateCubeVertices() {
 	cube_sides[4].vertices[3] = vertex;
 
 	vertex = {
-		size/2 * sin(direction.theta + atan(M_PI - sqrt(2))) * cos(direction.phi - M_PI/4),
-		size/2 * sin(direction.theta + atan(M_PI - sqrt(2))) * sin(direction.phi - M_PI/4),
-		size/2 * cos(direction.theta + atan(M_PI - sqrt(2)))
+		size / 2 * sin(direction.theta + atan(M_PI - sqrt(2))) * cos(direction.phi - M_PI / 4),
+		size / 2 * sin(direction.theta + atan(M_PI - sqrt(2))) * sin(direction.phi - M_PI / 4),
+		size / 2 * cos(direction.theta + atan(M_PI - sqrt(2)))
 	};
 	vertices[5] = vertex;
 	cube_sides[1].vertices[1] = vertex;
@@ -179,9 +197,9 @@ void Cube::updateCubeVertices() {
 	cube_sides[5].vertices[3] = vertex;
 
 	vertex = {
-		size/2 * sin(direction.theta + atan(M_PI - sqrt(2))) * cos(direction.phi - M_PI*3/4),
-		size/2 * sin(direction.theta + atan(M_PI - sqrt(2))) * sin(direction.phi - M_PI*3/4),
-		size/2 * cos(direction.theta + atan(M_PI - sqrt(2)))
+		size / 2 * sin(direction.theta + atan(M_PI - sqrt(2))) * cos(direction.phi - M_PI * 3 / 4),
+		size / 2 * sin(direction.theta + atan(M_PI - sqrt(2))) * sin(direction.phi - M_PI * 3 / 4),
+		size / 2 * cos(direction.theta + atan(M_PI - sqrt(2)))
 	};
 	vertices[6] = vertex;
 	cube_sides[1].vertices[2] = vertex;
@@ -189,9 +207,9 @@ void Cube::updateCubeVertices() {
 	cube_sides[5].vertices[2] = vertex;
 
 	vertex = {
-		size/2 * sin(direction.theta + atan(M_PI - sqrt(2))) * cos(direction.phi + M_PI*3/4),
-		size/2 * sin(direction.theta + atan(M_PI - sqrt(2))) * sin(direction.phi + M_PI*3/4),
-		size/2 * cos(direction.theta + atan(M_PI - sqrt(2)))
+		size / 2 * sin(direction.theta + atan(M_PI - sqrt(2))) * cos(direction.phi + M_PI * 3 / 4),
+		size / 2 * sin(direction.theta + atan(M_PI - sqrt(2))) * sin(direction.phi + M_PI * 3 / 4),
+		size / 2 * cos(direction.theta + atan(M_PI - sqrt(2)))
 	};
 	vertices[7] = vertex;
 	cube_sides[1].vertices[3] = vertex;
@@ -202,7 +220,10 @@ void Cube::updateCubeVertices() {
 		vertices[i].x += center.x;
 		vertices[i].y += center.y;
 		vertices[i].z += center.z;
+		std::cout << vertices[i].x << " " << vertices[i].y << " " << vertices[i].z << std::endl;
 	}
+
+	std::cout << "----------------" << direction.theta << std::endl;
 }
 
 bool Cube::checkHolding(Point fingertips[5]) {

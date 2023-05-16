@@ -1,6 +1,10 @@
-#include <iostream>
+﻿#include <iostream>
 #include <Glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "Shader.h"
 #include <chrono>
@@ -55,14 +59,15 @@ int main() {
 	// Initializing EBO, VBO, and VAO in the BufferSet class
 	mainBuffer.generateBuffers();
 
-	//Cube(center, size, angle)
-	Cube cubeOne(objects, { 0, 0, 0 }, 100, { 0, 0 }, { 1.0f, 0.4f, 0.4f }, 0);
+	//Cube(objectVector, center, size, angle <Θ,φ>, color, id)
+	Cube cubeOne(objects, { 0, 0, 0 }, 600, { 0.3f, 0 }, { 1.0f, 0.4f, 0.4f }, 0);
 
 
 	//changeCubeCenter(x, y, z)
-	cubeOne.changeCubeCenter(-1920/2, -1080/2, 0);
+	cubeOne.changeCubeCenter(0.0f, 0.0f, 0.0f);
 	cubeOne.updateCubeVertices();
 	cubeOne.addCube(vertices, indices);
+	//cubeOne.updateVertices(cubeOne.vertices, vertices, 6);
 
 	// Updating the vertices and indices in the buffers
 	mainBuffer.updateArrayBuffer(vertices);
@@ -75,6 +80,10 @@ int main() {
 
 	auto timeNow = std::chrono::high_resolution_clock::now();
 
+	float rotation = 0.0f;
+	double prevTime = glfwGetTime();
+
+	glEnable(GL_DEPTH_TEST);
 
 	while (!glfwWindowShouldClose(window)) {
 		double deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - timeNow).count();
@@ -86,25 +95,66 @@ int main() {
 
 		// Erases the entire screen
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT); 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
 		shader.Activate();
+
+		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 view = glm::mat4(1.0f);
+		glm::mat4 proj = glm::mat4(1.0f);
+
+
+		Orientation updateAngle = cubeOne.getDirection();
+		double currentTime = glfwGetTime();
+
+		if (currentTime - prevTime >= 1 / 120) {
+			prevTime = currentTime;
+			updateAngle.theta += 0.01;
+
+			//updateAngle.phi += 0.01;
+			//rotation += 0.2f;
+		}
+
+
+		model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
+		view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f)); 
+		proj = glm::perspective(glm::radians(45.0f), (float)(width / height), 0.1f, 10.0f);
+
+		int modelLoc = glGetUniformLocation(shader.ID, "model");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		int viewLoc = glGetUniformLocation(shader.ID, "view");
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+		int projLoc = glGetUniformLocation(shader.ID, "proj");
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
 
 		/*
 		
 			Code here to change vertices positions every loop...
 			
 		*/
+		/*
 		Point updatePoint = cubeOne.getCubeCenter();
 
-		cubeOne.changeCubeCenter(updatePoint.x + 1, updatePoint.y + 1, 0);
+		cubeOne.changeCubeCenter(updatePoint.x + 1, updatePoint.y + 1, updatePoint.z);
 		cubeOne.updateCubeVertices();
 
+		*/
+
+		Point updatePoint = cubeOne.getCubeCenter();
+
+		
+
+
+		cubeOne.changeCubeCenter(updatePoint.x, updatePoint.y, updatePoint.z);
+		cubeOne.setDirection(updateAngle);
+		cubeOne.updateCubeVertices();
 		cubeOne.updateVertices(cubeOne.vertices, vertices, 6);
 
 		// Updates the array buffer with any new changes to the vertices vector
 		mainBuffer.updateArrayBuffer(vertices);
 		mainBuffer.updateElementBuffer(indices);
+		
+
 		
 		// Draws all the triangles from the indices vector
 		mainBuffer.bindVertexArray();

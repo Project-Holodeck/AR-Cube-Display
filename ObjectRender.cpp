@@ -27,9 +27,10 @@ void ObjectRender::updateVertices(Point positions[], std::vector<GLfloat>& verti
 	for (int i = 0; i < (this->vertexEnd - this->vertexStart)/stride; i++ ) {
 		vertices[vertexStart + i*stride] = positions[i].x / screenWidth;
 		vertices[vertexStart + i * stride + 1] = positions[i].y / screenHeight;
-		vertices[vertexStart + i * stride + 2] = 0; //positions[i].z;
+		vertices[vertexStart + i * stride + 2] = positions[i].z / screenWidth / 4 * 3;
+		//std::cout << positions[i].x << " " << positions[i].y << " " << positions[i].z << std::endl;
 	}
-
+	//std::cout << "----------------" << std::endl;
 }
 
 
@@ -101,14 +102,14 @@ void Cube::addCube(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices)
 	for (int i = 0; i < 8; i++) {
 
 		// Positions with stride of 3
-		newVertices.push_back(this->vertices[i].x / screenWidth * 2 - 1);
-		newVertices.push_back(this->vertices[i].y / screenHeight * 2 - 1);
-		newVertices.push_back(0.0f /*positions[i].z */);
+		newVertices.push_back(this->vertices[i].x / screenWidth);
+		newVertices.push_back(this->vertices[i].y / screenHeight);
+		newVertices.push_back(this->vertices[i].z / screenWidth / 4 * 3);
 
 		// Color with stride of 3
-		newVertices.push_back(color.red);
-		newVertices.push_back(color.green);
-		newVertices.push_back(color.blue);
+		newVertices.push_back(color.red + i/10.0f);
+		newVertices.push_back(color.green + i/10.0f);
+		newVertices.push_back(color.blue + i/10.0f);
 
 	}
 

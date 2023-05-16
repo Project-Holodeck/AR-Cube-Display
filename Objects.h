@@ -20,6 +20,12 @@ public:
 	void changeCubeCenter(Point loc);	// change center of cube
 	void changeCubeCenter(double x, double y, double z);	// change center of cube
 
+	void setSize(double size);	// sets the size of the cube
+	void setDirection(Orientation direction);
+
+	double getSize();
+	Orientation getDirection();
+
 	void updatePlanes();	// compute plane eqs for each side
 	void updateCubeVertices();	// compute vertices for the cube
 	bool checkHolding(Point fingertips[5]);	// check whether fingers are touching at least two cube sides
