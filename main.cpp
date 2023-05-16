@@ -13,6 +13,8 @@
 #include "Objects.h"
 #include "BufferSet.h"
 
+#include <cmath>
+
 int width = 1920, height = 1080;
 
 float fps = (1/60.0f);
@@ -60,7 +62,7 @@ int main() {
 	mainBuffer.generateBuffers();
 
 	//Cube(objectVector, center, size, angle <Θ,φ>, color, id)
-	Cube cubeOne(objects, { 0, 0, 0 }, 600, { 0.3f, 0 }, { 1.0f, 0.4f, 0.4f }, 0);
+	Cube cubeOne(objects, { 0, 0, 0 }, 300, { 0.0f, 0 }, { 1.0f, 0.4f, 0.4f }, 0);
 
 
 	//changeCubeCenter(x, y, z)
@@ -107,14 +109,17 @@ int main() {
 		Orientation updateAngle = cubeOne.getDirection();
 		double currentTime = glfwGetTime();
 
-		if (currentTime - prevTime >= 1 / 120) {
+
+		Point updatePoint = cubeOne.getCubeCenter();
+
+		if (currentTime - prevTime >= 1) {
 			prevTime = currentTime;
-			updateAngle.theta += 0.01;
+			//updateAngle.theta += 0.01;
 
 			//updateAngle.phi += 0.01;
 			//rotation += 0.2f;
+			updatePoint.x += sqrt(pow(cubeOne.getSize(),2) / 3);
 		}
-
 
 		model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
 		view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f)); 
@@ -140,7 +145,6 @@ int main() {
 
 		*/
 
-		Point updatePoint = cubeOne.getCubeCenter();
 
 		
 

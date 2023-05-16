@@ -26,8 +26,8 @@ void ObjectRender::updateVertices(Point positions[], std::vector<GLfloat>& verti
 
 	for (int i = 0; i < (this->vertexEnd - this->vertexStart)/stride; i++ ) {
 		vertices[vertexStart + i*stride] = positions[i].x / screenWidth;
-		vertices[vertexStart + i * stride + 1] = positions[i].y / screenHeight;
-		vertices[vertexStart + i * stride + 2] = positions[i].z / screenWidth / 4 * 3;
+		vertices[vertexStart + i * stride + 1] = positions[i].y / screenWidth;
+		vertices[vertexStart + i * stride + 2] = positions[i].z / screenHeight;
 		//std::cout << positions[i].x << " " << positions[i].y << " " << positions[i].z << std::endl;
 	}
 	//std::cout << "----------------" << std::endl;
@@ -103,8 +103,8 @@ void Cube::addCube(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices)
 
 		// Positions with stride of 3
 		newVertices.push_back(this->vertices[i].x / screenWidth);
-		newVertices.push_back(this->vertices[i].y / screenHeight);
-		newVertices.push_back(this->vertices[i].z / screenWidth / 4 * 3);
+		newVertices.push_back(this->vertices[i].y / screenWidth);
+		newVertices.push_back(this->vertices[i].z / screenHeight);
 
 		// Color with stride of 3
 		newVertices.push_back(color.red + i/10.0f);
