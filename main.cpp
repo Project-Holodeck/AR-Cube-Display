@@ -10,10 +10,12 @@
 #include <chrono>
 #include <vector>
 
-#include "Objects.h"
+#include "Cube.h"
 #include "BufferSet.h"
 
 #include <cmath>
+
+#include <Windows.h>
 
 int width = 1920, height = 1080;
 
@@ -76,13 +78,14 @@ int main() {
 	mainBuffer.updateElementBuffer(indices);
 
 	// Sets the reading data of the vertices array (MUST BE DONE AFTER UPDATING ARRAY BUFFER)
-	mainBuffer.linkAttributes(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-	mainBuffer.linkAttributes(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	mainBuffer.linkAttributes(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); // Vertex, Stride of 6, Offset of 0, Location = 0 in default.vert
+	mainBuffer.linkAttributes(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))); // Color, Stride of 6, Offset of 3, Location = 1 in default.vert 
 	
 
 	auto timeNow = std::chrono::high_resolution_clock::now();
 
 	float rotation = 0.0f;
+	float freeValue = 0.0f;
 	double prevTime = glfwGetTime();
 
 	glEnable(GL_DEPTH_TEST);
@@ -112,17 +115,18 @@ int main() {
 
 		Point updatePoint = cubeOne.getCubeCenter();
 
-		if (currentTime - prevTime >= 1) {
+		if (currentTime - prevTime >= 1/60) {
 			prevTime = currentTime;
 			//updateAngle.theta += 0.01;
 
 			//updateAngle.phi += 0.01;
 			//rotation += 0.2f;
-			updatePoint.x += sqrt(pow(cubeOne.getSize(),2) / 3);
+			//updatePoint.z += sqrt(pow(cubeOne.getSize(),2) / 3);
+			freeValue -= 0.01f;
 		}
 
 		model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
-		view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f)); 
+		view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f + freeValue)); 
 		proj = glm::perspective(glm::radians(45.0f), (float)(width / height), 0.1f, 10.0f);
 
 		int modelLoc = glGetUniformLocation(shader.ID, "model");
@@ -132,18 +136,7 @@ int main() {
 		int projLoc = glGetUniformLocation(shader.ID, "proj");
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
 
-		/*
-		
-			Code here to change vertices positions every loop...
-			
-		*/
-		/*
-		Point updatePoint = cubeOne.getCubeCenter();
 
-		cubeOne.changeCubeCenter(updatePoint.x + 1, updatePoint.y + 1, updatePoint.z);
-		cubeOne.updateCubeVertices();
-
-		*/
 
 
 		
@@ -168,6 +161,8 @@ int main() {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+
 	mainBuffer.deleteBuffers();
 	shader.Delete();
 	glfwDestroyWindow(window);

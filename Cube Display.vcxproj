@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BufferSet.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ObjectRender.cpp" />
@@ -160,7 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferSet.h" />
-    <ClInclude Include="Objects.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="ObjectRender.h" />
     <ClInclude Include="PhysicsEngine.hpp" />
     <ClInclude Include="Shader.h" />

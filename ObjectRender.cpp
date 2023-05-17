@@ -1,5 +1,4 @@
 #include "ObjectRender.h"
-#include "Objects.h"
 #include <iostream>
 
 
@@ -84,67 +83,4 @@ void ObjectRender::deleteObject(std::vector<GLfloat>& vertices, std::vector<GLui
 	}
 
 	objectVector.erase(objectVector.begin() + this->objectID);
-}
-
-
-
-void Cube::addCube(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices) {
-	int screenWidth = 1920;
-	int screenHeight = 1080;
-
-	// Sets index of vertices for cube (Total of 4 vertices)
-	this->vertexStart = vertices.size();
-	this->vertexEnd = vertexStart + 8 * 6;
-
-	// Sets positions of each vertex (stride of 3) and color (stride of 3)
-	std::vector<GLfloat> newVertices;
-
-	for (int i = 0; i < 8; i++) {
-
-		// Positions with stride of 3
-		newVertices.push_back(this->vertices[i].x / screenWidth);
-		newVertices.push_back(this->vertices[i].y / screenWidth);
-		newVertices.push_back(this->vertices[i].z / screenHeight);
-
-		// Color with stride of 3
-		newVertices.push_back(color.red + i/10.0f);
-		newVertices.push_back(color.green + i/10.0f);
-		newVertices.push_back(color.blue + i/10.0f);
-
-	}
-
-	// Sets index of indices for cube (Total of 6 indices)
-	this->indexStart = indices.size();
-	this->indexEnd = indexStart + 12 * 3;
-
-
-
-	// Sets vertex indices for the indices vector to be appended
-	std::vector<GLuint> newIndices = {
-		// Top Face
-		vertexStart + 0, vertexStart + 1, vertexStart + 2,
-		vertexStart + 0, vertexStart + 2, vertexStart + 3,
-
-		// Side Face
-		vertexStart + 0, vertexStart + 4, vertexStart + 5,
-		vertexStart + 0, vertexStart + 1, vertexStart + 5,
-
-		vertexStart + 0, vertexStart + 4, vertexStart + 7,
-		vertexStart + 0, vertexStart + 3, vertexStart + 7,
-
-		vertexStart + 2, vertexStart + 1, vertexStart + 5,
-		vertexStart + 2, vertexStart + 6, vertexStart + 5,
-
-		vertexStart + 2, vertexStart + 6, vertexStart + 7,
-		vertexStart + 2, vertexStart + 3, vertexStart + 7,
-
-		// Bottom Face
-		vertexStart + 4, vertexStart + 5, vertexStart + 6,
-		vertexStart + 4, vertexStart + 6, vertexStart + 7
-	};
-
-	// Merges new vertices and indices to current vertices and indicies vector
-	vertices.insert(vertices.end(), newVertices.begin(), newVertices.end());
-	indices.insert(indices.end(), newIndices.begin(), newIndices.end());
-
 }
