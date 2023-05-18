@@ -146,9 +146,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BufferSet.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="KeyboardInput.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MouseInput.cpp" />
     <ClCompile Include="ObjectRender.cpp" />
     <ClCompile Include="PhysicsEngine.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -161,7 +164,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferSet.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="KeyboardInput.h" />
+    <ClInclude Include="MouseInput.h" />
     <ClInclude Include="ObjectRender.h" />
     <ClInclude Include="PhysicsEngine.hpp" />
     <ClInclude Include="Shader.h" />

@@ -15,7 +15,9 @@
 
 #include <cmath>
 
-#include <Windows.h>
+#include "KeyboardInput.h"
+#include "MouseInput.h"
+#include "Camera.h"
 
 int width = 1920, height = 1080;
 
@@ -71,7 +73,6 @@ int main() {
 	cubeOne.changeCubeCenter(0.0f, 0.0f, 0.0f);
 	cubeOne.updateCubeVertices();
 	cubeOne.addCube(vertices, indices);
-	//cubeOne.updateVertices(cubeOne.vertices, vertices, 6);
 
 	// Updating the vertices and indices in the buffers
 	mainBuffer.updateArrayBuffer(vertices);
@@ -88,10 +89,26 @@ int main() {
 	float freeValue = 0.0f;
 	double prevTime = glfwGetTime();
 
+	// Set up Input Controller (Keyboard)
+	KeyboardInputController keyController;
+	MouseInputController mouseController;
+
+	// Set up Camera
+	Camera camera;
+
+	camera.setVelocity(0.4f);
+	camera.setSensitivity(2.0f);
+	camera.setShaderID(shader.ID);
+
 	glEnable(GL_DEPTH_TEST);
+
+
+	camera.setPosition(glm::vec3(0.0f, 0.0f, 2.0f));
 
 	while (!glfwWindowShouldClose(window)) {
 		double deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - timeNow).count();
+
+
 		
 		//Polls to loop ever 1/fps seconds 
 		if (deltaTime <= fps) continue;
@@ -104,9 +121,6 @@ int main() {
 
 		shader.Activate();
 
-		glm::mat4 model = glm::mat4(1.0f);
-		glm::mat4 view = glm::mat4(1.0f);
-		glm::mat4 proj = glm::mat4(1.0f);
 
 
 		Orientation updateAngle = cubeOne.getDirection();
@@ -122,23 +136,21 @@ int main() {
 			//updateAngle.phi += 0.01;
 			//rotation += 0.2f;
 			//updatePoint.z += sqrt(pow(cubeOne.getSize(),2) / 3);
-			freeValue -= 0.01f;
-		}
-
-		model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
-		view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f + freeValue)); 
-		proj = glm::perspective(glm::radians(45.0f), (float)(width / height), 0.1f, 10.0f);
-
-		int modelLoc = glGetUniformLocation(shader.ID, "model");
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		int viewLoc = glGetUniformLocation(shader.ID, "view");
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-		int projLoc = glGetUniformLocation(shader.ID, "proj");
-		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+			//freeValue -= 0.01f;
+//			if (inputController.getUpPressed())
+	//			freeValue -= 1 * deltaTime;
+		//	if (inputController.getDownPressed())
+			//	freeValue += 1 * deltaTime;
+		}   
 
 
 
+		// Check for inputs
+		keyController.cameraControl(camera, deltaTime); // Updates value of camera position
+		mouseController.cameraControl(camera, window, width, height); // Updates value of camera angle
+		camera.setFOV(45.0f, width, height, 0.1f, 10.0f); // Updates FOV of camera
 
+		camera.updateCamera(); // Updates camera view 
 		
 
 
@@ -161,6 +173,9 @@ int main() {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+	keyController.unHook();
+	mouseController.unHook();
 
 
 	mainBuffer.deleteBuffers();

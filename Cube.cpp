@@ -24,7 +24,7 @@ void Cube::addCube(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices)
 		// Positions with stride of 3
 		newVertices.push_back(this->vertices[i].x / screenWidth);
 		newVertices.push_back(this->vertices[i].y / screenWidth);
-		newVertices.push_back(this->vertices[i].z / screenHeight);
+		newVertices.push_back(this->vertices[i].z / screenWidth);
 
 		// Color with stride of 3
 		newVertices.push_back(color.red + i / 10.0f);
@@ -256,10 +256,10 @@ void Cube::updateCubeVertices() {
 		vertices[i].x += center.x;
 		vertices[i].y += center.y;
 		vertices[i].z += center.z;
-		std::cout << vertices[i].x << " " << vertices[i].y << " " << vertices[i].z << std::endl;
+		//std::cout << vertices[i].x << " " << vertices[i].y << " " << vertices[i].z << std::endl;
 	}
 
-	std::cout << "----------------" << direction.theta << std::endl;
+	//std::cout << "----------------" << direction.theta << std::endl;
 }
 
 bool Cube::checkHolding(Point fingertips[5]) {
