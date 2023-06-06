@@ -10,8 +10,8 @@ class MouseInputController {
 	private:
 		static HHOOK mouseHook;
 
-		bool leftPressed;
-		bool rightPressed;
+		static bool leftPressed;
+		static bool rightPressed;
 
 
 	public:
@@ -22,12 +22,8 @@ class MouseInputController {
 
 		// Set up
 		void unHook();
-		static void setCursorX(int x);
-		static void setCursorY(int y);
 
 		// Getters
-		static int getCursorX();
-		static int getCursorY();
 		int getLeftPressed();
 		int getRightPressed();
 

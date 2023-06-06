@@ -6,6 +6,8 @@
 #include <glm/gtx/vector_angle.hpp>
 
 HHOOK MouseInputController::mouseHook = NULL;
+bool MouseInputController::leftPressed = false;
+bool MouseInputController::rightPressed = false;
 
 MouseInputController::MouseInputController() {
 	this->mouseHook = SetWindowsHookEx(WH_MOUSE_LL, MouseInputController::MouseProc, NULL, 0);
@@ -14,8 +16,15 @@ MouseInputController::MouseInputController() {
 LRESULT CALLBACK MouseInputController::MouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
     if (nCode >= 0 && wParam == WM_MOUSEMOVE)
     {
-        MSLLHOOKSTRUCT* mouseInfo = reinterpret_cast<MSLLHOOKSTRUCT*>(lParam);
+        if (wParam == WM_LBUTTONDOWN)
+            leftPressed = true;
+        else if (wParam == WM_LBUTTONUP)
+            leftPressed = false;
 
+        if (wParam == WM_RBUTTONDOWN)
+            rightPressed = true;
+        else if (wParam == WM_RBUTTONUP)
+            rightPressed = false;
     }
 
     // Call the next hook procedure in the hook chain
@@ -28,8 +37,8 @@ void MouseInputController::unHook() {
 }
 
 // Getters
-int MouseInputController::getLeftPressed() { return this->leftPressed; }
-int MouseInputController::getRightPressed() { return this->rightPressed; }
+int MouseInputController::getLeftPressed() { return leftPressed; }
+int MouseInputController::getRightPressed() { return rightPressed; }
 
 void MouseInputController::cameraControl(Camera& camera, GLFWwindow* window, int width, int height) {
 

@@ -19,6 +19,11 @@
 #include "MouseInput.h"
 #include "Camera.h"
 
+#include <leap/LeapC.h>
+
+#include "LeapController.h"
+
+
 int width = 1920, height = 1080;
 
 float fps = (1/60.0f);
@@ -67,12 +72,17 @@ int main() {
 
 	//Cube(objectVector, center, size, angle <Θ,φ>, color, id)
 	Cube cubeOne(objects, { 0, 0, 0 }, 300, { 0.0f, 0 }, { 1.0f, 0.4f, 0.4f }, 0);
+	Cube cubeTwo(objects, { 0, 0, 0 }, 300, { 0.0f, 0 }, { 1.0f, 0.0f, 0.4f }, 1);
 
 
 	//changeCubeCenter(x, y, z)
 	cubeOne.changeCubeCenter(0.0f, 0.0f, 0.0f);
 	cubeOne.updateCubeVertices();
 	cubeOne.addCube(vertices, indices);
+
+	cubeTwo.changeCubeCenter(173.2f, 0.0f, 0.0f); // Sidelength = Sqrt(Size^2 / 3)
+	cubeTwo.updateCubeVertices();
+	cubeTwo.addCube(vertices, indices);
 
 	// Updating the vertices and indices in the buffers
 	mainBuffer.updateArrayBuffer(vertices);
@@ -99,17 +109,32 @@ int main() {
 	camera.setVelocity(0.4f);
 	camera.setSensitivity(2.0f);
 	camera.setShaderID(shader.ID);
+	camera.setPosition(glm::vec3(0.0f, 0.0f, 2.0f));
 
 	glEnable(GL_DEPTH_TEST);
 
+	/*
+	LeapController leapController;
+	
+	ConnectionCallbacks.on_connection = &(leapController.OnConnect);
+	ConnectionCallbacks.on_device_found = &(leapController.OnDevice);
+	ConnectionCallbacks.on_frame = &(leapController.OnFrame);
+	ConnectionCallbacks.on_image = &(leapController.OnImage);
+	ConnectionCallbacks.on_point_mapping_change = &(leapController.OnPointMappingChange);
+	ConnectionCallbacks.on_log_message = &(leapController.OnLogMessage);
+	ConnectionCallbacks.on_head_pose = &(leapController.OnHeadPose);
 
-	camera.setPosition(glm::vec3(0.0f, 0.0f, 2.0f));
 
+	leapController.connectionHandle = OpenConnection();
+	{
+		LEAP_ALLOCATOR allocator = { leapController.allocate, leapController.deallocate, NULL };
+		LeapSetAllocator(*(leapController.connectionHandle), &allocator);
+	}
+	LeapSetPolicyFlags(*(leapController.connectionHandle), eLeapPolicyFlag_Images | eLeapPolicyFlag_MapPoints, 0);
+	*/
 	while (!glfwWindowShouldClose(window)) {
 		double deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - timeNow).count();
 
-
-		
 		//Polls to loop ever 1/fps seconds 
 		if (deltaTime <= fps) continue;
 
@@ -119,45 +144,27 @@ int main() {
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
-		shader.Activate();
-
-
-
 		Orientation updateAngle = cubeOne.getDirection();
 		double currentTime = glfwGetTime();
 
-
 		Point updatePoint = cubeOne.getCubeCenter();
 
-		if (currentTime - prevTime >= 1/60) {
-			prevTime = currentTime;
-			//updateAngle.theta += 0.01;
-
-			//updateAngle.phi += 0.01;
-			//rotation += 0.2f;
-			//updatePoint.z += sqrt(pow(cubeOne.getSize(),2) / 3);
-			//freeValue -= 0.01f;
-//			if (inputController.getUpPressed())
-	//			freeValue -= 1 * deltaTime;
-		//	if (inputController.getDownPressed())
-			//	freeValue += 1 * deltaTime;
-		}   
-
-
-
-		// Check for inputs
+		// Camera Controls
 		keyController.cameraControl(camera, deltaTime); // Updates value of camera position
 		mouseController.cameraControl(camera, window, width, height); // Updates value of camera angle
 		camera.setFOV(45.0f, width, height, 0.1f, 10.0f); // Updates FOV of camera
-
 		camera.updateCamera(); // Updates camera view 
-		
 
-
+		// Cube Updates
 		cubeOne.changeCubeCenter(updatePoint.x, updatePoint.y, updatePoint.z);
 		cubeOne.setDirection(updateAngle);
 		cubeOne.updateCubeVertices();
 		cubeOne.updateVertices(cubeOne.vertices, vertices, 6);
+
+
+		cubeTwo.updateCubeVertices();
+		cubeTwo.updateVertices(cubeTwo.vertices, vertices, 6);
+		
 
 		// Updates the array buffer with any new changes to the vertices vector
 		mainBuffer.updateArrayBuffer(vertices);
@@ -169,14 +176,13 @@ int main() {
 		mainBuffer.bindVertexArray();
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 		mainBuffer.unbindVertexArray();
-
+		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
 	keyController.unHook();
 	mouseController.unHook();
-
 
 	mainBuffer.deleteBuffers();
 	shader.Delete();

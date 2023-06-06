@@ -37,30 +37,30 @@ void Cube::addCube(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices)
 	this->indexStart = indices.size();
 	this->indexEnd = indexStart + 12 * 3;
 
-
+	GLuint indexNum = vertexStart / 6;
 
 	// Sets vertex indices for the indices vector to be appended
 	std::vector<GLuint> newIndices = {
 		// Top Face
-		vertexStart + 0, vertexStart + 1, vertexStart + 2,
-		vertexStart + 0, vertexStart + 2, vertexStart + 3,
+		indexNum + 0, indexNum + 1, indexNum + 2,
+		indexNum + 0, indexNum + 2, indexNum + 3,
 
 		// Side Face
-		vertexStart + 0, vertexStart + 4, vertexStart + 5,
-		vertexStart + 0, vertexStart + 1, vertexStart + 5,
+		indexNum + 0, indexNum + 4, indexNum + 5,
+		indexNum + 0, indexNum + 1, indexNum + 5,
 
-		vertexStart + 0, vertexStart + 4, vertexStart + 7,
-		vertexStart + 0, vertexStart + 3, vertexStart + 7,
+		indexNum + 0, indexNum + 4, indexNum + 7,
+		indexNum + 0, indexNum + 3, indexNum + 7,
 
-		vertexStart + 2, vertexStart + 1, vertexStart + 5,
-		vertexStart + 2, vertexStart + 6, vertexStart + 5,
+		indexNum + 2, indexNum + 1, indexNum + 5,
+		indexNum + 2, indexNum + 6, indexNum + 5,
 
-		vertexStart + 2, vertexStart + 6, vertexStart + 7,
-		vertexStart + 2, vertexStart + 3, vertexStart + 7,
+		indexNum + 2, indexNum + 6, indexNum + 7,
+		indexNum + 2, indexNum + 3, indexNum + 7,
 
 		// Bottom Face
-		vertexStart + 4, vertexStart + 5, vertexStart + 6,
-		vertexStart + 4, vertexStart + 6, vertexStart + 7
+		indexNum + 4, indexNum + 5, indexNum + 6,
+		indexNum + 4, indexNum + 6, indexNum + 7
 	};
 
 	// Merges new vertices and indices to current vertices and indicies vector

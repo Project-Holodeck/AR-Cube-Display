@@ -66,6 +66,12 @@
     <ClCompile Include="MouseInput.cpp">
       <Filter>Source Files\InputController</Filter>
     </ClCompile>
+    <ClCompile Include="LeapConnection.cpp">
+      <Filter>Source Files\InputController</Filter>
+    </ClCompile>
+    <ClCompile Include="LeapController.cpp">
+      <Filter>Source Files\InputController</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="default.vert">
@@ -100,6 +106,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MouseInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LeapConnection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LeapController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
