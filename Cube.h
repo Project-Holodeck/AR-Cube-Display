@@ -4,6 +4,15 @@
 #include "PhysicsEngine.hpp"
 #include "ObjectRender.h"
 
+enum Type {
+	BLOCK,
+	ITEM,
+};
+
+struct Coordinate {
+	int x, y, z;
+};
+
 class Cube : public ObjectRender {
 private:
 	Point center;	// center of cube in cartesian coordinates
@@ -13,12 +22,17 @@ private:
 
 public:
 	Point vertices[8];	// eight corners of cube
-	Cube(std::vector<ObjectRender>& objectVector);
-	Cube(std::vector<ObjectRender>& objectVector, Point _center, double _size, Orientation _direction, Color color, int id);
+	Cube(Type _blockType, int id);
+	Cube(Point _center, Type _blockType, Orientation _direction, Color color, int id);
 
+	
+	void setCubeCoordinate(Coordinate loc);	// change center of cube
+	void setCubeCoordinate(int x, int y, int z);	// change center of cube
+	Coordinate getCubeCoordinate();	// returns cube coordinate in a coord struct
+
+	void setCubeCenter(Point loc);	// change center of cube
+	void setCubeCenter(double x, double y, double z);	// change center of cube
 	Point getCubeCenter();	// returns center of cube in a point struct
-	void changeCubeCenter(Point loc);	// change center of cube
-	void changeCubeCenter(double x, double y, double z);	// change center of cube
 
 	void setSize(double size);	// sets the size of the cube
 	void setDirection(Orientation direction);

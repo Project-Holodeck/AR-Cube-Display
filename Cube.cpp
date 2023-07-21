@@ -69,26 +69,59 @@ void Cube::addCube(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices)
 
 }
 
-Cube::Cube(std::vector<ObjectRender>& objectVector) : center({ 0,0,0 }), size(0), direction({ 0,0 }), ObjectRender({ 0, 0, 0 }, objectVector.size()) {
+Cube::Cube(Type _blockType, int id) : center({ 0,0,0 }), direction({ 0,0 }), ObjectRender({ 0, 0, 0 }, id) {
 	updatePlanes();
-	objectVector.push_back(*this);
+
+	if (_blockType == BLOCK)
+		this->size = 300;
+	else if (_blockType == ITEM)
+		this->size = 100;
+	else
+		throw("Unknown block type");
 }
 
-Cube::Cube(std::vector<ObjectRender>& objectVector, Point _center, double _size, Orientation _direction, Color _color, int id) : center(_center), size(_size), direction(_direction), ObjectRender(_color, id) {
+Cube::Cube(Point _center, Type _blockType, Orientation _direction, Color _color, int id) : center(_center), direction(_direction), ObjectRender(_color, id) {
 	updatePlanes();
-	objectVector.push_back(*this);
+
+	if (_blockType == BLOCK)
+		this->size = 300;
+	else if (_blockType == ITEM)
+		this->size = 100;
+	else
+		throw("Unknown block type");
+}
+
+Coordinate Cube::getCubeCoordinate() {
+	return { (int)(center.x / 173.2f), (int)(center.y / 173.2f), (int)(center.z / 173.2f) };
 }
 
 Point Cube::getCubeCenter() {
 	return center;
 }
 
-void Cube::changeCubeCenter(Point loc) {
+void Cube::setCubeCoordinate(Coordinate loc) {
+	center = {
+				loc.x * 173.2,
+				loc.y * 173.2,
+				loc.z * 173.2
+			}; // 173.2f is the cube's side length
+
+	updatePlanes();
+}
+
+void Cube::setCubeCoordinate(int x, int y, int z) {
+	center.x = x * 173.2;
+	center.y = y * 173.2;
+	center.z = z * 173.2;
+	updatePlanes();
+}
+
+void Cube::setCubeCenter(Point loc) {
 	center = loc;
 	updatePlanes();
 }
 
-void Cube::changeCubeCenter(double x, double y, double z) {
+void Cube::setCubeCenter(double x, double y, double z) {
 	center.x = x;
 	center.y = y;
 	center.z = z;

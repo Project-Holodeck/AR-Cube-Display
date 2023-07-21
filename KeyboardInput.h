@@ -18,19 +18,24 @@ class KeyboardInputController {
 		static bool upPressed;
 		static bool downPressed;
 
+		static bool holdPressed;
+
 		static UINT forwardKey;
 		static UINT backwardKey;
 		static UINT leftKey;
 		static UINT rightKey;
 		static UINT upKey;
 		static UINT downKey;
+		static UINT holdKey;
 
-		static UINT* keys[6];
-		static bool* keyPressed[6];
+		static UINT* keys[7];
+		static bool* keyPressed[7];
 
 		static HHOOK keyboardHook;
 
-
+		static int counter;
+		static bool counterReset;
+		static int counterResetVal;
 
 	public:
 
@@ -49,6 +54,9 @@ class KeyboardInputController {
 		static void setRightKey(UINT key);
 		static void setUpKey(UINT key);
 		static void setDownKey(UINT key);
+		static void setHoldKey(UINT key);
+		static void setCounter(int num);
+		static void resetCounter(int num);
 
 		// Getters
 		static UINT getForwardKey();
@@ -57,6 +65,7 @@ class KeyboardInputController {
 		static UINT getRightKey();
 		static UINT getUpKey();
 		static UINT getDownKey();
+		static UINT getHoldKey();
 
 		static bool getForwardPressed();
 		static bool getBackwardPressed();
@@ -64,9 +73,16 @@ class KeyboardInputController {
 		static bool getRightPressed();
 		static bool getUpPressed();
 		static bool getDownPressed();
+		static bool getHoldPressed();
+
+		static int getCounter();
 
 		// Controls camera movement
-		void cameraControl(Camera& camera, float deltaTime);
+		static void cameraControl(Camera& camera, float deltaTime);
+
+		// Controls counter
+		static void counterControl();
+
 
 };
 
