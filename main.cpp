@@ -149,19 +149,14 @@ int main() {
 		// Cube Updates. Temporary
 		Cube* selectedCube = (Cube*)(objects.at(keyController.getCounter() % objects.size()));
 		keyController.resetCounter(keyController.getCounter() % objects.size());
-		Point updatePoint = selectedCube->getCubeCenter();
-		Orientation updateAngle = selectedCube->getDirection();
 		if (leapController.leftHand.active && leapController.leftHand.grab) {
 			printf("Left hand (%f, %f, %f)\n", leapController.leftHand.dx, leapController.leftHand.dy, leapController.leftHand.dz);
 			Movement movement = leapController.calculateMovement(true);
 
-			updatePoint.x += (double)movement.dx * handSensitivity;
-			updatePoint.y += (double)movement.dz * handSensitivity;
-			updatePoint.z += (double)movement.dy * handSensitivity;
+			selectedCube->moveCube(movement, handSensitivity);
 		}
+		else selectedCube->snapCube();
 
-		selectedCube->setCubeCenter(updatePoint.x, updatePoint.y, updatePoint.z);
-		selectedCube->setDirection(updateAngle);
 		selectedCube->updateCubeVertices();
 		selectedCube->updateVertices(selectedCube->vertices, vertices, 6);
 

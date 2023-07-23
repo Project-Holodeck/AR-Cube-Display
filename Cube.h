@@ -3,6 +3,7 @@
 
 #include "PhysicsEngine.hpp"
 #include "ObjectRender.h"
+#include "LeapController.h"
 
 enum Type {
 	BLOCK,
@@ -19,6 +20,7 @@ private:
 	double size;	// side length of cube
 	Orientation direction;	// direction cube in facing in spherical angular format <Θ,φ>
 	Plane cube_sides[6];	// plane eq for all 6 sides of cube with center as <0,0,0>
+	bool moving;	// whether cube is currently being held
 
 public:
 	Point vertices[8];	// eight corners of cube
@@ -39,6 +41,9 @@ public:
 
 	double getSize();
 	Orientation getDirection();
+
+	void moveCube(Movement movement, float handSensitivity);	// update cube coordinates as it is moved
+	void snapCube();	// snap cube to grid
 
 	void updatePlanes();	// compute plane eqs for each side
 	void updateCubeVertices();	// compute vertices for the cube

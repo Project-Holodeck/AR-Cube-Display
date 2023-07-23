@@ -144,7 +144,23 @@ Orientation Cube::getDirection() {
 	return this->direction;
 }
 
+void Cube::moveCube(Movement movement, float handSensitivity) {
+	moving = true;
+	center.x += (double)movement.dx * handSensitivity;
+	center.y += (double)movement.dz * handSensitivity;
+	center.z += (double)movement.dy * handSensitivity;
+	updatePlanes();
+}
 
+void Cube::snapCube() {
+	if (!moving) return;
+	setCubeCoordinate(
+		round(center.x / 173.2),
+		round(center.y / 173.2),
+		round(center.z / 173.2)
+	);
+	moving = false;
+}
 
 void Cube::updatePlanes() {
 	Plane side;

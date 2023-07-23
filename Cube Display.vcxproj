@@ -80,8 +80,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\irwin\Documents\Programming Stuff\CubeDisplay\Libraries\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\irwin\Documents\Programming Stuff\CubeDisplay\Libraries\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\School Stuff\UTOPH\AR-Cube-Display\Libraries\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\School Stuff\UTOPH\AR-Cube-Display\Libraries\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
